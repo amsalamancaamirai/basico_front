@@ -1,0 +1,129 @@
+<p-toast position="top-right" />
+
+<div class="min-h-screen flex flex-column">
+
+  <!-- Header -->
+  <div class="bg-primary px-5 py-4 flex align-items-center gap-3 shadow-2">
+    <i class="pi pi-bolt text-white text-3xl"></i>
+    <div>
+      <h1 class="text-white m-0 text-xl font-bold">FastAPI + Angular + PrimeNG</h1>
+      <p class="text-white m-0 text-sm opacity-80">Conectado a http://localhost:8000</p>
+    </div>
+  </div>
+
+  <div class="p-5 flex flex-column gap-4 max-w-4xl mx-auto w-full">
+
+    <!-- Tarjetas de endpoints -->
+    <div class="grid">
+
+      <!-- Hola Mundo -->
+      <div class="col-12 md:col-6">
+        <p-card styleClass="h-full shadow-2">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2 px-4 pt-4">
+              <p-badge value="GET" severity="success" />
+              <span class="font-mono text-sm font-semibold">/</span>
+            </div>
+          </ng-template>
+          <div class="flex flex-column gap-3">
+            <p class="text-600 m-0">Llama al endpoint de Hola Mundo del backend.</p>
+            <p-button
+              label="Ejecutar"
+              icon="pi pi-play"
+              [loading]="cargandoHola"
+              (onClick)="llamarHolaMundo()"
+              styleClass="w-full"
+            />
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Saludo personalizado -->
+      <div class="col-12 md:col-6">
+        <p-card styleClass="h-full shadow-2">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2 px-4 pt-4">
+              <p-badge value="GET" severity="success" />
+              <span class="font-mono text-sm font-semibold">/saludo/&#123;nombre&#125;</span>
+            </div>
+          </ng-template>
+          <div class="flex flex-column gap-3">
+            <p class="text-600 m-0">Envía tu nombre y recibe un saludo personalizado.</p>
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+              <input
+                pInputText
+                [(ngModel)]="nombre"
+                placeholder="Tu nombre"
+                (keyup.enter)="llamarSaludoPersonalizado()"
+              />
+            </div>
+            <p-button
+              label="Ejecutar"
+              icon="pi pi-play"
+              [loading]="cargandoSaludo"
+              (onClick)="llamarSaludoPersonalizado()"
+              styleClass="w-full"
+            />
+          </div>
+        </p-card>
+      </div>
+    </div>
+
+    <!-- Respuesta -->
+    <p-card *ngIf="respuesta" styleClass="shadow-2 border-left-3 border-green-500">
+      <div class="flex align-items-center gap-3">
+        <i class="pi pi-check-circle text-green-500 text-2xl"></i>
+        <div>
+          <p class="text-500 text-sm m-0 mb-1">Respuesta del backend</p>
+          <p class="text-900 text-xl font-bold m-0">{{ respuesta }}</p>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Historial -->
+    <p-card *ngIf="historial.length > 0" header="Historial de llamadas" styleClass="shadow-2">
+      <div class="flex flex-column gap-2">
+        <div
+          *ngFor="let item of historial"
+          class="flex align-items-center justify-content-between p-3 border-round surface-100"
+        >
+          <div class="flex align-items-center gap-3">
+            <p-badge value="GET" severity="success" />
+            <span class="font-mono text-sm">{{ item.tipo }}</span>
+          </div>
+          <div class="flex align-items-center gap-3">
+            <span class="text-600 text-sm">{{ item.mensaje }}</span>
+            <p-tag [value]="item.hora" severity="secondary" icon="pi pi-clock" />
+          </div>
+        </div>
+      </div>
+      <ng-template pTemplate="footer">
+        <p-button
+          label="Limpiar historial"
+          icon="pi pi-trash"
+          severity="secondary"
+          [text]="true"
+          (onClick)="limpiar()"
+        />
+      </ng-template>
+    </p-card>
+
+    <!-- Info Swagger -->
+    <p-card styleClass="shadow-2">
+      <div class="flex align-items-center gap-3">
+        <i class="pi pi-book text-primary text-2xl"></i>
+        <div>
+          <p class="font-bold m-0 mb-1">Documentación Swagger</p>
+          <p class="text-600 m-0 text-sm">
+            Explora todos los endpoints en
+            <a href="http://localhost:8000/docs" target="_blank" class="text-primary">
+              http://localhost:8000/docs
+            </a>
+          </p>
+        </div>
+      </div>
+    </p-card>
+
+  </div>
+</div>

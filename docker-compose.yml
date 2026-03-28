@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "4200:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  backend:
+    image: basico-backend
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
